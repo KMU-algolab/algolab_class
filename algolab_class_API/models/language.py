@@ -3,18 +3,18 @@ from django.db import models
 
 class Language(models.Model):
     """
-    언어 (LNG)
+    언어
     """
     id = models.AutoField(
         '서로게이트키',
-        db_column='LNG_ID',
+        db_column='ID',
         primary_key=True,
         null=False,
     )
 
     language = models.CharField(
         '언어(버전)',
-        db_column='CRS_Language',
+        db_column='Language',
         max_length=50,
         primary_key=False,
         unique=True,
@@ -22,7 +22,7 @@ class Language(models.Model):
 
     compile_message = models.CharField(
         '컴파일 메세지',
-        db_column='CRS_CompileMessage',
+        db_column='CompileMessage',
         max_length=50,
         null=True,
         blank=True
@@ -30,7 +30,7 @@ class Language(models.Model):
 
     run_message = models.CharField(
         '실행 메세지',
-        db_column='CRS_RunMessage',
+        db_column='RunMessage',
         max_length=50,
         null=False,
         blank=False,

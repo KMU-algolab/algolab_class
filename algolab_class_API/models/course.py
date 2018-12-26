@@ -6,11 +6,11 @@ from .language import Language
 
 class Course(models.Model):
     """
-    과목 (CRS)
+    과목
     """
     id = models.AutoField(
         '서로게이트키',
-        db_column='CRS_ID',
+        db_column='ID',
         primary_key=True,
         null=False,
     )
@@ -18,14 +18,14 @@ class Course(models.Model):
     manager = models.ForeignKey(
         User,
         verbose_name='교수자',
-        db_column='CRS_Manager',
+        db_column='Manager',
         primary_key=False,
         on_delete=models.DO_NOTHING,
     )
 
     name = models.CharField(
         '과목명',
-        db_column='CRS_Name',
+        db_column='Name',
         max_length=50,
         null=False,
         unique=True,
@@ -33,13 +33,13 @@ class Course(models.Model):
 
     start_date = models.DateTimeField(
         '시작일',
-        db_column='CRS_StartDate',
+        db_column='StartDate',
         null=False,
     )
 
     end_date = models.DateTimeField(
         '종료일',
-        db_column='CRS_EndDate',
+        db_column='EndDate',
         null=False,
     )
 
@@ -55,11 +55,11 @@ class Course(models.Model):
 
 class LanguageOfCourse(models.Model):
     """
-    사용언어 (LOC)
+    사용언어
     """
     id = models.AutoField(
         '서로게이트키',
-        db_column='LOC_ID',
+        db_column='ID',
         primary_key=True,
         null=False,
     )
@@ -67,7 +67,7 @@ class LanguageOfCourse(models.Model):
     course = models.ForeignKey(
         Course,
         verbose_name='수업',
-        db_column='LOC_Course',
+        db_column='Course',
         primary_key=False,
         null=False,
         blank=False,
@@ -77,7 +77,7 @@ class LanguageOfCourse(models.Model):
     language = models.ForeignKey(
         Language,
         verbose_name='언어',
-        db_column='LOC_Language',
+        db_column='Language',
         primary_key=False,
         null=False,
         blank=False,
@@ -93,11 +93,11 @@ class LanguageOfCourse(models.Model):
 
 class StudentInCourse(models.Model):
     """
-    수강학생 (SIC)
+    수강학생
     """
     id = models.AutoField(
         '서로게이트키',
-        db_column='SIC_ID',
+        db_column='ID',
         primary_key=True,
         null=False,
     )
@@ -105,7 +105,7 @@ class StudentInCourse(models.Model):
     course = models.ForeignKey(
         Course,
         verbose_name='수업',
-        db_column='SIC_Course',
+        db_column='Course',
         primary_key=False,
         null=False,
         blank=False,
@@ -115,7 +115,7 @@ class StudentInCourse(models.Model):
     student = models.ForeignKey(
         User,
         verbose_name='학생',
-        db_column='SIC_Language',
+        db_column='Language',
         primary_key=False,
         null=False,
         blank=False,
