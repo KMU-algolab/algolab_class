@@ -35,7 +35,7 @@ class Board(models.Model):
         null=False,
     )
 
-    contextType = models.CharField(
+    context_type = models.CharField(
         '글 종류',
         db_column='ContextType',
         max_length=10,

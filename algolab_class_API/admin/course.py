@@ -22,7 +22,7 @@ class LanguageOfCourseAdmin(admin.ModelAdmin):
     과목별 사용 언어 관리
     """
     list_display = ['id', 'course', 'language']
-    form = forms.LanguageOfCourse
+    form = forms.LanguageOfCourseForm
 
     class Meta:
         model = models.LanguageOfCourse
@@ -34,7 +34,7 @@ class StudentInCourse(admin.ModelAdmin):
     수강 학생 관리
     """
     list_display = ['id', 'course', 'student']
-    form = forms.StudentInCourse
+    form = forms.StudentInCourseForm
 
     class Meta:
         model = models.StudentInCourse

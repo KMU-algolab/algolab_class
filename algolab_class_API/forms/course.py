@@ -11,14 +11,14 @@ class CourseForm(forms.ModelForm):
             "remark": forms.Textarea
         }
         help_texts = {
-            'manager': '과목 관리자의 선택하세요.',
+            'manager': '과목 관리자를 선택하세요.',
             'name': '과목명을 입력하세요.',
             'start_date': '과목 시작일을 입력하세요.',
             'end_date': '과목 종료일을 입력하세요.',
         }
 
 
-class LanguageOfCourse(forms.ModelForm):
+class LanguageOfCourseForm(forms.ModelForm):
     class Meta:
         model = models.LanguageOfCourse
         fields = '__all__'
@@ -31,7 +31,7 @@ class LanguageOfCourse(forms.ModelForm):
         }
 
 
-class StudentInCourse(forms.ModelForm):
+class StudentInCourseForm(forms.ModelForm):
     class Meta:
         model = models.StudentInCourse
         fields = '__all__'
