@@ -93,6 +93,9 @@ class ProblemTestCase(models.Model):
         blank=False,
     )
 
+    def __str__(self):
+        return '{}'.format(self.problem.name)
+
     class Meta:
         db_table = 'ProblemTestCase'
         ordering = ['problem__name']
