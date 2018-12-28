@@ -75,3 +75,10 @@ class SubmitHistory(models.Model):
         null=False,
         blank=False,
     )
+
+    class Meta:
+        db_table = 'SubmitHistory'
+        ordering = ['id']
+        verbose_name = '제출 기록'
+        verbose_name_plural = '제출 기록'
+

@@ -4,7 +4,7 @@ from .. import models
 from .. import forms
 
 
-@admin.register(models.submitHistory)
+@admin.register(models.SubmitHistory)
 class SubmitHistoryAdmin(admin.ModelAdmin):
     """
     제출 기록 관리
