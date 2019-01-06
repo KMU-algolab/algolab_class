@@ -44,3 +44,4 @@ class Language(models.Model):
         ordering = ['id']
         verbose_name = '언어: 프로그래밍 언어'
         verbose_name_plural = '언어: 프로그래밍 언어'
+

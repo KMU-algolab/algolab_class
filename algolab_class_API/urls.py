@@ -23,6 +23,7 @@ from . import views, routers
 
 router = routers.AppRouter()
 router.register(r'course', views.api.course.CourseViewSet, 'course')
+router.register(r'board', views.api.board.BoardViewSet, 'board')
 
 
 api_info = openapi.Info(

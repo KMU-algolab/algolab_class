@@ -19,7 +19,11 @@ class Course(models.Model):
         User,
         verbose_name='교수자',
         db_column='Manager',
+        related_name='courseManager_set',
         primary_key=False,
+        unique=False,
+        null=False,
+        blank=False,
         on_delete=models.DO_NOTHING,
     )
 

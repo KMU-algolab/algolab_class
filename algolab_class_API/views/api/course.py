@@ -4,7 +4,7 @@ from rest_framework import viewsets, status, mixins as mx
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
-from ... import models, serializers
+from algolab_class_API import models, serializers
 
 
 class CourseViewSet(mixins.VersionedSchemaMixin,

@@ -5,10 +5,12 @@ from .language import Language
 from .problem import ProblemInCourse
 
 STATUS_TYPE_CHOICES = (
+    ("NOT_SOLVED", "NotSolved"),
     ("SOLVED", "Solved"),
     ("COMPILE_ERROR", "CompileError"),
     ("TIME_OVER", "TimeOver"),
     ("RUNTIME_ERROR", "RuntimeError"),
+    ("SERVER_ERROR", "ServerError"),
 )
 
 
@@ -58,6 +60,7 @@ class SubmitHistory(models.Model):
         db_column='Status',
         null=False,
         choices=STATUS_TYPE_CHOICES,
+        default=STATUS_TYPE_CHOICES[0][0],
         max_length=10,
     )
 

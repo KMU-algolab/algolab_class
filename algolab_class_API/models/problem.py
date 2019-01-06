@@ -146,6 +146,9 @@ class ProblemInCourse(models.Model):
         null=False,
     )
 
+    def __str__(self):
+        return '{}'.format(self.problem.name)
+
     class Meta:
         db_table = 'ProblemInCourse'
         ordering = ['course__id', 'id']
