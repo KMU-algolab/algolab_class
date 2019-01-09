@@ -1,7 +1,9 @@
 from .course import CourseSerializer, LanguageOfCourseSerializer, StudentInCourseSerializer, CourseMiniSerializer
 from .language import LanguageSerializer
-from .board import BoardQuestionSerializer, BoardReplySerializer
+from .board import BoardQuestionListSerializer, BoardReplySerializer, BoardContentsSerializer, \
+    BoardQuestionCreateSerializer
 
 __all__ = ['CourseSerializer', 'LanguageOfCourseSerializer', 'StudentInCourseSerializer',
            'LanguageSerializer',
-           'BoardQuestionSerializer', 'BoardReplySerializer']
+           'BoardQuestionListSerializer', 'BoardReplySerializer', 'BoardContentsSerializer',
+           'BoardQuestionCreateSerializer']

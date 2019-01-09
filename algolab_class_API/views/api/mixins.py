@@ -10,7 +10,7 @@ class VersionedSchemaMixin(object):
     def get_response_for(self, instance, created=False, serializer_class=None):
         if serializer_class:
             self.serializer_class = serializer_class
-
+            
         serializer = self.serializer_class(instance)
 
         if created:
