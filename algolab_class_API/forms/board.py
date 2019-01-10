@@ -14,8 +14,8 @@ class BoardQuestionForm(forms.ModelForm):
             'title': '글 제목을 입력하세요.',
             'writer': '작성자를 선택하세요.',
             'problem': '문제를 선택하세요.',
-            'context': '내용을 입력하세요.',
-            'contextType': '글 종류를 선택하세요.',
+            'contents': '내용을 입력하세요.',
+            'contentsType': '글 종류를 선택하세요.',
             'write_time': '글 작성 시간을 입력하세요.',
         }
 
@@ -29,7 +29,7 @@ class BoardReplyForm(forms.ModelForm):
         }
         help_texts = {
             'writer': '작성자를 선택하세요.',
-            'context': '내용을 입력하세요.',
+            'contents': '내용을 입력하세요.',
             'question': '질문을 선택하세요.',
             'write_time': '글 작성 시간을 입력하세요.',
         }

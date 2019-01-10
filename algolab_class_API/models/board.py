@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 from .problem import Problem
 
-CONTEXT_TYPE_CHOICES = (
+CONTENTS_TYPE_CHOICES = (
     ("NOTICE", "공지사항"),
     ("QUESTION", "질문"),
 )
@@ -48,25 +48,26 @@ class BoardQuestion(models.Model):
         on_delete=models.DO_NOTHING,
     )
 
-    context = models.TextField(
+    contents = models.TextField(
         '내용',
-        db_column='Context',
+        db_column='Contents',
         null=False,
+        blank=False,
+        default='내용을 입력하세요.',
     )
 
-    context_type = models.CharField(
+    contents_type = models.CharField(
         '글 종류',
-        db_column='ContextType',
+        db_column='ContentsType',
         max_length=10,
-        choices=CONTEXT_TYPE_CHOICES,
-        default=CONTEXT_TYPE_CHOICES[1][0],
+        choices=CONTENTS_TYPE_CHOICES,
+        default=CONTENTS_TYPE_CHOICES[1][0],
         null=False,
     )
 
     write_time = models.DateTimeField(
         '작성 시간',
         db_column='WriteTime',
-        auto_now_add=True,
         null=False,
         blank=False,
     )
@@ -102,10 +103,12 @@ class BoardReply(models.Model):
         on_delete=models.DO_NOTHING,
     )
 
-    context = models.TextField(
+    contents = models.TextField(
         '내용',
-        db_column='Context',
+        db_column='Contents',
+        default='내용을 입력하세요.',
         null=False,
+        blank=False,
     )
 
     question = models.ForeignKey(

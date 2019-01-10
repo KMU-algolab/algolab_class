@@ -33,7 +33,8 @@ class CourseViewSet(mixins.VersionedSchemaMixin,
         for id in data['languages']:
             models.LanguageOfCourse.objects.create(course=sq, language_id=id)
 
-        return self.get_response_list_for(models.Course.objects.filter(manager=self.request.user), serializers.CourseSerializer)
+        return self.get_response_list_for(models.Course.objects.filter(manager=self.request.user),
+                                          serializers.CourseSerializer)
 
     def retrieve(self, request, *args, **kwargs):
         return self.get_response_for(models.Course.objects.get(id=kwargs['id']), False, serializers.CourseSerializer)
@@ -41,7 +42,7 @@ class CourseViewSet(mixins.VersionedSchemaMixin,
     def destroy(self, request, *args, **kwargs):
         sq = models.Course.objects.get(id=kwargs['id'])
 
-        if sq and sq.deviceGroup.manager != self.request.user:
+        if sq and sq.manager != self.request.user:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         sq.delete()
