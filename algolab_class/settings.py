@@ -116,11 +116,13 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser'
     ),
 
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+    # 'PAGE_SIZE': 10,
 
     # time/date formatting
     'DATETIME_FORMAT': 'iso-8601',
-    'DATETIME_INPUT_FORAMTS': ('iso-8601', '%Y-%m-%d %H:%M:%S',),
+    'DATETIME_INPUT_FORMATS': ('iso-8601', '%Y-%m-%d %H:%M:%S',),
     'DATE_FORMAT': 'iso-8601',
     'DATE_INPUT_FORMATS': ('iso-8601', '%Y', '%Y-m', '%Y-%m-%d',),
 

@@ -52,6 +52,8 @@ class BoardQuestion(models.Model):
         '내용',
         db_column='Contents',
         null=False,
+        blank=False,
+        default='내용을 입력하세요.',
     )
 
     contents_type = models.CharField(
@@ -104,6 +106,7 @@ class BoardReply(models.Model):
     contents = models.TextField(
         '내용',
         db_column='Contents',
+        default='내용을 입력하세요.',
         null=False,
         blank=False,
     )
