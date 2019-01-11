@@ -13,12 +13,12 @@ class ProblemViewSet(mixins.VersionedSchemaMixin,
 
     """
     lookup_url_kwarg = 'id'
-    # serializer_class = serializers.
+    serializer_class = serializers.ProblemSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
 
     def list(self, request, *args, **kwargs):
         user_info = models.UserInfo.objects.get(user=self.request.user)
-        course_info = models.UserInfo.objects.get(student=self.request.user) # 여러 과목을 수강한다면?
+        course_info = models.UserInfo.objects.get(student=self.request.user)  # 여러 과목을 수강한다면?
         if user_info.authority == 'SERVER_MANAGER':
             return self.get_response_list_for(models.Problem.objects.all(), serializers.ProblemListSerializer)
         else:
@@ -26,7 +26,7 @@ class ProblemViewSet(mixins.VersionedSchemaMixin,
                                               serializers.ProblemInCourseListSerializer)
 
     def create(self, request, *args, **kwargs):
-        serializer = serializers.ProblemSerializer
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
         user_info = models.UserInfo.objects.get(user=self.request.user)
@@ -41,4 +41,6 @@ class ProblemViewSet(mixins.VersionedSchemaMixin,
                                                  judge_code=data['judge_code'])
 
         return self.get_response_list_for(models.Problem.objects.all(), serializers.ProblemListSerializer)
+
+
 

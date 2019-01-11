@@ -12,6 +12,7 @@ class ProblemForm(forms.ModelForm):
         }
         help_texts = {
             'name': '문제 이름을 입력하세요.',
+            'problem_file': '문제 파일을 선택하세요.',
             'limit_time': '제한 시간을 입력하세요.',
             'limit_memory': '제한 메모리를 입력하세요.',
             'judge_type': '채점 타입을 선택하세요.',

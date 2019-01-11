@@ -9,7 +9,7 @@ class ProblemAdmin(admin.ModelAdmin):
     """
     문제 관리
     """
-    list_display = ['id', 'name', 'limit_time', 'limit_memory', 'judge_type', 'judge_code']
+    list_display = ['id', 'name', 'problem_file', 'limit_time', 'limit_memory', 'judge_type', 'judge_code']
     form = forms.ProblemForm
 
     class Meta:
