@@ -45,7 +45,7 @@ class BoardQuestion(models.Model):
         primary_key=False,
         null=False,
         blank=False,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
     )
 
     contents = models.TextField(

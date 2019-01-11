@@ -27,6 +27,11 @@ class Problem(models.Model):
         unique=True,
     )
 
+    problem_file = models.FileField(
+        upload_to='problem_files/',
+        null=False,
+    )
+
     limit_time = models.IntegerField(
         '제한시간',
         db_column='LimitTime',
