@@ -65,18 +65,18 @@ class BoardViewSet(mixins.VersionedSchemaMixin,
         data = serializer.validated_data
         user_info = models.UserInfo.objects.get(user=self.request.user)
 
-        sq = models.BoardQuestion.objects.get(id=kwargs['id'])
-        if sq and user_info.authority != 'SERVER_MANAGER' and user_info.authority != 'CLASS_MANAGER' and sq.writer != self.request.user:
+        instance = models.BoardQuestion.objects.get(id=kwargs['id'])
+        if instance and user_info.authority < 90 and instance.writer != self.request.user:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        if sq:
-            sq.title = data['title']
-            sq.writer = data['writer']
-            sq.problem = data['problem']
-            sq.write_time = datetime.datetime.now()
-            sq.save()
+        if instance:
+            instance.title = data['title']
+            instance.writer = data['writer']
+            instance.problem = data['problem']
+            instance.write_time = datetime.datetime.now()
+            instance.save()
 
-        return self.get_response_for(sq, False, serializers.BoardContentsSerializer)
+        return self.get_response_for(instance, False, serializers.BoardContentsSerializer)
 
     @action(detail=False, methods=['post', 'put', 'delete'],
             url_name='reply',
@@ -88,10 +88,10 @@ class BoardViewSet(mixins.VersionedSchemaMixin,
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
 
-            instance = models.BoardReply.object.create(writer=self.request.user,
-                                                       contents=data['contents'],
-                                                       question=data['question'],
-                                                       write_time=datetime.datetime.now())
+            instance = models.BoardReply.objects.create(writer=self.request.user,
+                                                        contents=data['contents'],
+                                                        question=data['question'],
+                                                        write_time=datetime.datetime.now())
 
             return self.get_response_for(instance, True, serializers.BoardReplySerializer)
 
@@ -103,7 +103,7 @@ class BoardViewSet(mixins.VersionedSchemaMixin,
             data = serializer.validated_data
             user_info = models.UserInfo.objects.get(user=self.request.user)
 
-            if sq and user_info.authority != 'SERVER_MANAGER' and user_info.authority != 'CLASS_MANAGER' and sq.writer != self.request.user:
+            if sq and user_info.authority < models.AuthorityType.CLASS_MANAGER and sq.writer != self.request.user:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
             if sq:

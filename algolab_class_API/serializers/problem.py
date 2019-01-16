@@ -17,10 +17,8 @@ class ProblemListSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
-class ProblemInCourseListSerializer(serializers.ModelSerializer):
-    problem_name = serializers.CharField(source='problem.name')
-
+class ProblemInCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ProblemInCourse
-        fields = ['id', 'course', 'problem_name', 'start_date', 'end_date']
+        fields = ['id', 'course', 'problem', 'start_date', 'end_date']
 

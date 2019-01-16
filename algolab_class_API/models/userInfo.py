@@ -1,12 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from enum import Enum
+
+
+class AuthorityType(Enum):
+    STUDENT = 1
+    MENTOR = 2
+    CLASS_MANAGER = 3
+    SERVER_MANAGER = 4
+
 
 AUTHORITY_TYPE_CHOICES = (
-    ("STUDENT", "학생"),
-    ("MENTOR", "멘토"),
-    ("CLASS_MANAGER", "과목관리자"),
-    ("SERVER_MANAGER", "서버관리자"),
+    (AuthorityType.STUDENT , "학생"),
+    (AuthorityType.MENTOR, "멘토"),
+    (AuthorityType.CLASS_MANAGER, "과목관리자"),
+    (AuthorityType.SERVER_MANAGER, "서버관리자"),
 )
 
 
@@ -23,7 +32,7 @@ class UserInfo(models.Model):
         blank=False,
     )
 
-    authority = models.CharField(
+    authority = models.IntegerField(
         '권한',
         db_column='Authority',
         null=False,
