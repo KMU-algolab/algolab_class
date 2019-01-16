@@ -24,6 +24,7 @@ from . import views, routers
 router = routers.AppRouter()
 router.register(r'course', views.api.course.CourseViewSet, 'course')
 router.register(r'board', views.api.board.BoardViewSet, 'board')
+router.register(r'problem/<id>', views.api.problem.ProblemViewSet, 'problem')
 
 
 api_info = openapi.Info(

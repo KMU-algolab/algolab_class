@@ -15,6 +15,7 @@ class CourseForm(forms.ModelForm):
             'name': '과목명을 입력하세요.',
             'start_date': '과목 시작일을 입력하세요.',
             'end_date': '과목 종료일을 입력하세요.',
+            'is_test': '시험 여부를 선택하세요.',
         }
 
 

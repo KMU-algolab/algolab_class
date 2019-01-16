@@ -47,6 +47,12 @@ class Course(models.Model):
         null=False,
     )
 
+    is_test = models.BooleanField(
+        '시험 여부',
+        db_column='IsTest',
+        null=False,
+    )
+
     def __str__(self):
         return '{}, {}'.format(self.manager.username, self.name)
 

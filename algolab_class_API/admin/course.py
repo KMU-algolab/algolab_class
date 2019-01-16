@@ -9,7 +9,7 @@ class CourseAdmin(admin.ModelAdmin):
     """
     과목 관리
     """
-    list_display = ['id', 'manager', 'name', 'start_date', 'end_date']
+    list_display = ['id', 'manager', 'name', 'start_date', 'end_date', 'is_test']
     form = forms.CourseForm
 
     class Meta:
