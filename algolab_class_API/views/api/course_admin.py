@@ -8,7 +8,7 @@ from algolab_class_API import models, serializers
 
 
 class CourseAdminProblemViewSet(mixins.VersionedSchemaMixin,
-                         viewsets.ModelViewSet):
+                                viewsets.ModelViewSet):
     lookup_url_kwarg = 'id'
     serializer_class = serializers.ProblemSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
@@ -17,7 +17,7 @@ class CourseAdminProblemViewSet(mixins.VersionedSchemaMixin,
         return self.get_response_list_for(models.Course.objects.filter(manager=self.request.user),
                                           serializers.ProblemSerializer)
 
-    @action(methods= ['get', 'post', 'put', 'delete'],detail=False,
+    @action(methods=['get', 'post', 'put', 'delete'], detail=False,
             url_name='problem',
             url_path='problem/(?P<id>[0-9]+)',
             serializer_class=serializers.ProblemInCourseSerializer)
@@ -34,8 +34,7 @@ class CourseAdminProblemViewSet(mixins.VersionedSchemaMixin,
             instance = models.ProblemInCourse.objects.create(course=data['course'],
                                                              problem=data['problem'],
                                                              start_date=data['start_date'],
-                                                             end_date=data['end_date']
-                                                             )
+                                                             end_date=data['end_date'])
 
             return self.get_response_for(instance, True, serializers.ProblemInCourseSerializer)
 

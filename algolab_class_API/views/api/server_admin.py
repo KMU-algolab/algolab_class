@@ -1,5 +1,8 @@
 from . import mixins
 
+from django.contrib.auth.models import User
+from django.contrib.auth.models import UserManager
+
 from rest_framework import viewsets, status, mixins as mx
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -71,9 +74,26 @@ class ServerAdminProblemViewSet(mixins.VersionedSchemaMixin,
 class ServerAdminUserViewSet(mixins.VersionedSchemaMixin,
                              viewsets.ModelViewSet):
     lookup_url_kwarg = 'id'
-    # serializer_class = serializers.
+    serializer_class = serializers.UserSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
 
     def list(self, request, *args, **kwargs):
-        return
+        return self.get_response_list_for(User.objects.all(),
+                                          serializers.UserSerializer)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        if self.request.user.groups != "SERVER_MANAGER":
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        instance = UserManager.create_user(self.request.user,
+                                           username=data['username'],
+                                           password=data['password'],
+                                           groups=data['authority'])
+
+        return self.get_response_for(instance, True, serializers.UserSerializer)
+
 
