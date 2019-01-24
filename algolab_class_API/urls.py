@@ -41,7 +41,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    url(r'', include(router.urls)),
     # JWT 로그인
     url(r'^token/authorize/?$', obtain_jwt_token),
     url(r'^token/verify/?$', verify_jwt_token),

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import datetime
 from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -107,7 +108,7 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAuthenticated',
     ],
 
     'DEFAULT_PARSER_CLASSES': (
@@ -130,6 +131,14 @@ REST_FRAMEWORK = {
     'UNICODE_JSON': True,
     'COMPACT_JSON': True,
     'STRICT_JSON': True,
+}
+
+JWT_AUTH = {
+    'JWT_ENCODE_HANDLER': 'rest_framework_jwt.utils.jwt_encode_handler',
+    'JWT_DECODE_HANDLER': 'rest_framework_jwt.utils.jwt_decode_handler',
+    'JWT_PAYLOAD_HANDLER': 'algolab_class_API.views.api.jwt.jwt_payload_handler',
+    'JWT_AUTH_HEADER_PREFIX': 'JMT',
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300)
 }
 
 # Internationalization
