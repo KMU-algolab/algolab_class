@@ -10,7 +10,7 @@ class CourseMiniSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Course
-        fields = ['id', 'name', 'start_date', 'end_date', 'languages']
+        fields = ['id', 'name', 'start_date', 'end_date', 'is_test', 'languages']
 
 
 class LanguageOfCourseSerializer(serializers.ModelSerializer):

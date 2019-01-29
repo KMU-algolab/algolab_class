@@ -8,7 +8,7 @@ from .user import UserSerializer
 class ProblemSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Problem
-        fields = ['id', 'name', 'limit_time', 'limit_memory', 'judge_type', 'judge_code']
+        fields = ['id', 'name', 'limit_time', 'limit_memory', 'problem_file', 'judge_type', 'judge_code']
 
 
 class ProblemListSerializer(serializers.ModelSerializer):

@@ -50,6 +50,7 @@ class Course(models.Model):
     is_test = models.BooleanField(
         '시험 여부',
         db_column='IsTest',
+        default=False,
         null=False,
     )
 
@@ -125,7 +126,7 @@ class StudentInCourse(models.Model):
     student = models.ForeignKey(
         User,
         verbose_name='학생',
-        db_column='Language',
+        db_column='Student',
         primary_key=False,
         null=False,
         blank=False,
@@ -137,3 +138,4 @@ class StudentInCourse(models.Model):
         ordering = ['id', 'course__id']
         verbose_name = '과목: 수강 학생'
         verbose_name_plural = '과목: 수강 학생'
+

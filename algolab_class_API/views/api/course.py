@@ -28,7 +28,8 @@ class CourseViewSet(mixins.VersionedSchemaMixin,
         sq = models.Course.objects.create(manager=self.request.user,
                                           name=data['name'],
                                           start_date=data['start_date'],
-                                          end_date=data['end_date'])
+                                          end_date=data['end_date'],
+                                          is_test=data['is_test'])
 
         for id in data['languages']:
             models.LanguageOfCourse.objects.create(course=sq, language_id=id)
@@ -63,9 +64,10 @@ class CourseViewSet(mixins.VersionedSchemaMixin,
             sq.name = data['name']
             sq.start_date = data['start_date']
             sq.end_date = data['end_date']
+            sq.is_test = data['is_test']
             sq.save()
 
             for id in data['languages']:
-                models.LanguageOfCourse.objects.create(course=sq, language__id=id)
+                models.LanguageOfCourse.objects.create(course=sq, language_id=id)
 
         return self.get_response_for(sq, False, serializers.CourseSerializer)

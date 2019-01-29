@@ -23,8 +23,11 @@ from . import views, routers
 
 router = routers.AppRouter()
 router.register(r'course', views.api.course.CourseViewSet, 'course')
-router.register(r'board', views.api.board.BoardViewSet, 'board')
-router.register(r'problem/<id>', views.api.problem.ProblemViewSet, 'problem')
+router.register(r'board/(?P<id>[0-9]+)', views.api.board.BoardViewSet, 'board')
+router.register(r'problem', views.api.problem.ProblemViewSet, 'problem')
+router.register(r'serverAdmin/problem', views.api.ServerAdminProblemViewSet, 'server_admin_problem')
+router.register(r'serverAdmin/user', views.api.ServerAdminUserViewSet, 'server_admin_user')
+router.register(r'courseAdmin/(?P<course_id>[0-9]+)', views.api.CourseAdminViewSet, 'course_admin_problem')
 
 
 api_info = openapi.Info(

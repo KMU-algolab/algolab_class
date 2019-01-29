@@ -26,11 +26,11 @@ def jwt_payload_handler(user):
         '`email` and `user_id`. ',
         DeprecationWarning
     )
-    print(user, user.pk, type(user), user.groups)
+    print(user, user.pk, type(user), user.groups.values_list('name', flat=True)[0])
     payload = {
         'user_id': user.pk,
         'username': username,
-        'group': str(user.groups),
+        'group': str(user.groups.values_list('name', flat=True)[0]),
         'exp': datetime.utcnow() + api_settings.JWT_EXPIRATION_DELTA
     }
     if hasattr(user, 'email'):
@@ -55,4 +55,3 @@ def jwt_payload_handler(user):
 
     return payload
 
-# print(decode_jwt(request.META['HTTP_JMT'])['group'])

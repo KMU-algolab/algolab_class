@@ -1,11 +1,13 @@
 import datetime
 
 from . import mixins
+from . import jwt
 
 from rest_framework import viewsets, status, mixins as mx
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
+from django.contrib.auth.models import User
 
 from ... import models, serializers
 
@@ -21,104 +23,73 @@ class BoardViewSet(mixins.VersionedSchemaMixin,
     """
     create:
     """
-    lookup_url_kwarg = 'id'
-    serializer_class = serializers.BoardQuestionListSerializer
-    http_method_names = ['get', 'post', 'put', 'delete']
+    # lookup_url_kwarg = 'id'
+    serializer_class = serializers.BoardContentsSerializer
+    http_method_names = ['get', 'post']
     pagination_class = BoardListResultsSetPagination
 
     def list(self, request, *args, **kwargs):
-        return self.get_response_list_for(models.BoardQuestion.objects.all(),
+        return self.get_response_list_for(models.BoardQuestion.objects.filter(problem_id=kwargs['id']),
                                           serializers.BoardQuestionListSerializer)
 
     def create(self, request, *args, **kwargs):
         serializer = serializers.BoardQuestionCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
+        user_info = jwt.decode_jwt(request.META['HTTP_JMT'])
 
-        sq = models.BoardQuestion.objects.create(title=data['title'],
-                                                 writer=self.request.user,
-                                                 problem=data['problem'],
-                                                 contents=data['contents'],
-                                                 contents_type=data['contents_type'],
-                                                 write_time=datetime.datetime.now())
+        instance = models.BoardQuestion.objects.create(title=data['title'],
+                                                       writer=User.objects.get(id=user_info['user_id']),
+                                                       problem=data['problem'],
+                                                       contents=data['contents'],
+                                                       contents_type=data['contents_type'],
+                                                       write_time=datetime.datetime.now())
 
-        return self.get_response_list_for(models.BoardQuestion.objects.all(),
-                                          serializers.BoardQuestionListSerializer)
+        return self.get_response_for(instance, True, serializers.BoardQuestionCreateSerializer)
 
-    def retrieve(self, request, *arg, **kwargs):
+    def retrieve(self, request, *args, **kwargs):
         return self.get_response_for(models.BoardQuestion.objects.get(id=kwargs['id']), False,
-                                     serializers.BoardContentsSerializer)
+                                     serializers.BoardQuestionListSerializer)
 
-    def destroy(self, request, *args, **kwargs):
-        sq = models.BoardQuestion.objects.get(id=kwargs['id'])
-        user_info = models.UserInfo.objects.get(user=self.request.user)
+    @action(detail=False, methods=['get', 'put', 'delete'],
+            url_name='question',
+            url_path='question/(?P<q_id>[0-9]+)',
+            serializer_class=serializers.BoardContentsSerializer)
+    def board_question(self, request, *args, **kwargs):
+        user_info = jwt.decode_jwt(request.META['HTTP_JMT'])
 
-        if sq and user_info.authority != 'SERVER_MANAGER' and user_info.authority != 'CLASS_MANAGER' and sq.writer != self.request.user:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        if request.method.lower() == 'get':
+            return self.get_response_for(models.BoardQuestion.objects.get(id=kwargs['q_id']), False,
+                                         serializers.BoardContentsSerializer)
 
-        sq.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if request.method.lower() == 'delete':
+            sq = models.BoardQuestion.objects.get(id=kwargs['q_id'])
+            if not sq and user_info['group'] != 'SERVER_MANAGER' and user_info['group'] != 'CLASS_MANAGER' \
+                    and sq.writer_id != user_info['user_id']:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def update(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        data = serializer.validated_data
-        user_info = models.UserInfo.objects.get(user=self.request.user)
+            sq.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
-        instance = models.BoardQuestion.objects.get(id=kwargs['id'])
-        if instance and user_info.authority < 90 and instance.writer != self.request.user:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        if instance:
-            instance.title = data['title']
-            instance.writer = data['writer']
-            instance.problem = data['problem']
-            instance.write_time = datetime.datetime.now()
-            instance.save()
-
-        return self.get_response_for(instance, False, serializers.BoardContentsSerializer)
-
-    @action(detail=False, methods=['post', 'put', 'delete'],
-            url_name='reply',
-            url_path='reply/(?P<id>[0-9]+)',
-            serializer_class=serializers.BoardReplySerializer)
-    def board_reply(self, request, *args, **kwargs):
-        if request.method.lower() == 'post':  # create
-            serializer = serializers.BoardReplySerializer(data=request.data)
+        if request.method.lower() == 'put':
+            serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
 
-            instance = models.BoardReply.objects.create(writer=self.request.user,
-                                                        contents=data['contents'],
-                                                        question=data['question'],
-                                                        write_time=datetime.datetime.now())
-
-            return self.get_response_for(instance, True, serializers.BoardReplySerializer)
-
-        sq = models.BoardReply.objects.get(id=kwargs['id'])
-
-        if request.method.lower() == 'put':  # update
-            serializer = serializers.BoardReplySerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            data = serializer.validated_data
-            user_info = models.UserInfo.objects.get(user=self.request.user)
-
-            if sq and user_info.authority < models.AuthorityType.CLASS_MANAGER and sq.writer != self.request.user:
+            sq = models.BoardQuestion.objects.get(id=kwargs['q_id'])
+            if not sq and user_info['group'] != 'SERVER_MANAGER' and user_info['group'] != 'CLASS_MANAGER' \
+                    and sq.writer_id != user_info['user_id']:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
             if sq:
+                sq.title = data['title']
                 sq.writer = data['writer']
+                sq.problem = data['problem']
                 sq.contents = data['contents']
-                sq.question = data['question']
+                sq.contents_type = data['contents_type']
+                sq.replies = data['replies']
                 sq.write_time = datetime.datetime.now()
                 sq.save()
 
-                return self.get_response_for(sq, False, serializers.BoardReplySerializer)
-
-        if request.method.lower() == 'delete':  # delete
-            sq.delete()
-
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        return self.get_response_for(sq, False, serializers.BoardReplySerializer)
+            return self.get_response_for(sq, False, serializers.BoardContentsSerializer)
 
