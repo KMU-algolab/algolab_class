@@ -23,7 +23,7 @@ class LanguageOfCourseSerializer(serializers.ModelSerializer):
 
 class StudentInCourseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.LanguageOfCourse
+        model = models.StudentInCourse
         fields = ['id', 'course', 'student']
 
 

@@ -86,7 +86,7 @@ class CourseAdminViewSet(mixins.VersionedSchemaMixin,
 
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        return self.get_response_for(sq, False, serializers.ProblemInCourseSerializer)
+        return self.get_response_list_for(models.ProblemInCourse.objects.all(), serializers.ProblemInCourseSerializer)
 
     @action(methods=['get', 'post', 'put', 'delete'], detail=False,
             url_name='user',
@@ -106,7 +106,7 @@ class CourseAdminViewSet(mixins.VersionedSchemaMixin,
             serializer.is_valid(raise_exception=True)
             data = serializer.validated_data
 
-            instance = models.ProblemInCourse.objects.create(course=data['course'],
+            instance = models.StudentInCourse.objects.create(course=data['course'],
                                                              student=data['student'])
 
             return self.get_response_for(instance, True, serializers.StudentInCourseSerializer)
